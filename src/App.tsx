@@ -13,7 +13,7 @@ function App() {
     checked: boolean;
   };
 
-  // 入力された値を保持するstate
+  // 入力された値を保持する
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
@@ -32,7 +32,29 @@ function App() {
   };
 
   // 編集する
-  const handleEdit = (e: React.ChangeEvent<HTMLInputElement>) => {};
+  const handleEdit = (id: number, inputValue: string) => {
+    const newTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        todo.inputValue = inputValue;
+      }
+      return todo;
+    });
+    setTodos(newTodos);
+    setInputValue("");
+  };
+
+  // チェックする
+  const handleChecked = (id: number, checked: boolean) => {
+    const newTodos = todos.map((todo) => {
+      if (todo.checked === false) {
+        todo.checked = true;
+      } else {
+        todo.checked = false;
+      }
+      return todo;
+    });
+    setTodos(newTodos);
+  };
 
   return (
     <div className="App">
@@ -54,9 +76,17 @@ function App() {
               <input
                 type="text"
                 onChange={(e) => {
-                  handleEdit;
+                  handleEdit(todo.id, e.target.value);
                 }}
                 className="inputText"
+                value={todo.inputValue}
+                disabled={todo.checked}
+              ></input>
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  handleChecked(todo.id, todo.checked);
+                }}
               ></input>
             </li>
           ))}
